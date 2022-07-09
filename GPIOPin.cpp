@@ -11,7 +11,9 @@ GPIOPin::GPIOPin(int pin, GPIODirection direction)
 }
 
 GPIOPin::~GPIOPin()
-{ }
+{
+  pinFile->close();
+}
 
 void GPIOPin::deregister()
 {

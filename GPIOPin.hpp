@@ -8,14 +8,28 @@ enum GPIODirection
   Out
 };
 
+/** @class GPIOPin
+ * This library allows you to set up a digital GPIO pin on a Jetpack Linux
+ * system using file I/O. It is not the fastest, but it's * fairly small and
+ * gets the job done.
+ *
+ * Methods used to get pathnames are left virtual to allow support for other
+ * platforms (e.g. Raspbian) in derived classes.
+ */
 class GPIOPin
 {
 public:
+  /** @brief Constructor
+   * @param pin The Linux GPIO pin number
+   * @param direction The direction of the GPIO pin: input or output */
   GPIOPin(int pin, GPIODirection direction);
   ~GPIOPin();
+
+  /** @brief Write a value (1 or 0) to the GPIO pin */
   void write(bool value);
   void setDebug(bool shouldDebug) { debuggingOn = shouldDebug; }
   std::string pinAsString() { return std::to_string(pin); }
+
   // Unexports the GPIO pin. Not called by default on decosntructing
   void deregister();
 private:
@@ -32,6 +46,7 @@ private:
 
   void setPinDirection(GPIODirection direction);
 
+  /** @brief The fstream object we keep open to allow speedy writes or reads */
   std::fstream *pinFile {nullptr};
   /** @brief The Linux GPIO pin number */
   int pin;
