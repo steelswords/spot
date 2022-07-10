@@ -18,6 +18,7 @@ public:
 private:
   void twistCallback(const geometry_msgs::msg::Twist::SharedPtr msg) const
   {
+#if 0
     std::string printoutMsg = "Got command: linear={" 
       +  std::to_string(msg->linear.x) + ", "
       +  std::to_string(msg->linear.y) + ", "
@@ -27,7 +28,37 @@ private:
       + std::to_string(msg->angular.y) + ", "
       + std::to_string(msg->angular.z) + "}";
     RCLCPP_INFO(this->get_logger(), printoutMsg.c_str());
-    
+#endif
+    // Because of the robot-centric coordinate system it uses, turtle_teleop_key
+    // uses the following encoding scheme:
+    // forward    := linear.x  ==  2
+    // backward   := linear.x  == -2
+    // turn left  := angular.z ==  2
+    // turn right := angular.z == -2
+
+    // The turtlesim can both turn and locomote at the same time. My robot can
+    // only do one or ther other. Using the turtle_teleop_key node only lets one
+    // or the other through.
+
+    int forwardMilliseconds = msg->linear.x * 125;
+    int turningMilliseconds = msg->angular.z * 75;
+
+    if (forwardMilliseconds > 0)
+    {
+      RCLCPP_INFO(this->get_logger(), "Driving forward for %d ms", forwardMilliseconds);
+    }
+    if (forwardMilliseconds < 0)
+    {
+      RCLCPP_INFO(this->get_logger(), "Driving backward for %d ms", abs(forwardMilliseconds));
+    }
+    if (turningMilliseconds > 0)
+    {
+      RCLCPP_INFO(this->get_logger(), "Turning right for %d ms", turningMilliseconds);
+    }
+    if (turningMilliseconds < 0)
+    {
+      RCLCPP_INFO(this->get_logger(), "Turning left for %d ms", abs(turningMilliseconds));
+    }
   }
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr m_subscription;
   std::string m_topicName{"/turtle1/cmd_vel"};
