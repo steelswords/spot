@@ -25,7 +25,7 @@ find_package(geometry_msgs REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 add_executable(drivetrain_turtlesim src/drivetrain_turtlesim.cpp)
-ament_target_dependencies(drivetrain_turtlesim rclcpp std_msgs)
+ament_target_dependencies(drivetrain_turtlesim rclcpp std_msgs geometry_msgs)
 target_include_directories(drivetrain_turtlesim PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
