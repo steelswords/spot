@@ -17,16 +17,20 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_executable(drivetrain_turltesim src/drivetrain_turltesim.cpp)
-target_include_directories(drivetrain_turltesim PUBLIC
+add_executable(drivetrain_turtlesim src/drivetrain_turtlesim.cpp)
+ament_target_dependencies(drivetrain_turtlesim rclcpp std_msgs)
+target_include_directories(drivetrain_turtlesim PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
-install(TARGETS drivetrain_turltesim
+install(TARGETS drivetrain_turtlesim
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
