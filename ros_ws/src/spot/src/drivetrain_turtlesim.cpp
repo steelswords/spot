@@ -51,11 +51,11 @@ private:
     {
       RCLCPP_INFO(this->get_logger(), "Driving backward for %d ms", abs(forwardMilliseconds));
     }
-    if (turningMilliseconds > 0)
+    if (turningMilliseconds < 0)
     {
       RCLCPP_INFO(this->get_logger(), "Turning right for %d ms", turningMilliseconds);
     }
-    if (turningMilliseconds < 0)
+    if (turningMilliseconds > 0)
     {
       RCLCPP_INFO(this->get_logger(), "Turning left for %d ms", abs(turningMilliseconds));
     }
