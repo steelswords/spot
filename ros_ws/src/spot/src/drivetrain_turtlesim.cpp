@@ -26,7 +26,7 @@ public:
 private:
   void twistCallback(const geometry_msgs::msg::Twist::SharedPtr msg) const
   {
-#if 0
+#if 1
     std::string printoutMsg = "Got command: linear={" 
       +  std::to_string(msg->linear.x) + ", "
       +  std::to_string(msg->linear.y) + ", "
@@ -72,8 +72,8 @@ private:
       m_drivetrain->turnLeft();
     }
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(forwardMilliseconds));
-    std::this_thread::sleep_for(std::chrono::milliseconds(turningMilliseconds));
+    std::this_thread::sleep_for(std::chrono::milliseconds(abs(forwardMilliseconds)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(abs(turningMilliseconds)));
     m_drivetrain->stop();
   }
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr m_subscription;
